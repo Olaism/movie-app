@@ -1,0 +1,42 @@
+[
+    {
+      "_id": {"$oid": "618ca06f7bb0d21bca5fb5c5"},
+      "name": "JavaScript Fundamentals",
+      "author": "John Smith",
+      "tags": ["JavaScript", "Programming", "Web Development"],
+      "isPublished": true,
+      "date": {"$date": "2022-04-30T00:00:00.000Z"}
+    },
+    {
+      "_id": {"$oid": "618ca07a7bb0d21bca5fb5c6"},
+      "name": "Python Basics",
+      "author": "Jane Doe",
+      "tags": ["Python", "Programming", "Data Science"],
+      "isPublished": false,
+      "date": {"$date": "2022-04-30T00:01:00.000Z"}
+    },
+    {
+      "_id": {"$oid": "618ca0867bb0d21bca5fb5c7"},
+      "name": "HTML and CSS",
+      "author": "Bob Johnson",
+      "tags": ["HTML", "CSS", "Web Design"],
+      "isPublished": true,
+      "date": {"$date": "2022-04-30T00:02:00.000Z"}
+    },
+    {
+      "_id": {"$oid": "618ca0917bb0d21bca5fb5c8"},
+      "name": "React Fundamentals",
+      "author": "Alice Lee",
+      "tags": ["React", "JavaScript", "Web Development"],
+      "isPublished": true,
+      "date": {"$date": "2022-04-30T00:03:00.000Z"}
+    },
+    {
+      "_id": {"$oid": "618ca09c7bb0d21bca5fb5c9"},
+      "name": "Machine Learning with Python",
+      "author": "Alex Chen",
+      "tags": ["Python", "Machine Learning", "Data Science"],
+      "isPublished": true,
+      "date": {"$date": "2022-04-30T00:04:00.000Z"}
+    }
+]
