@@ -2,7 +2,7 @@ const basicDebugger = require("debug")("app:basic");
 const dbDebugger = require("debug")("app:db");
 const express = require("express");
 const { body, validationResult } = require("express-validator");
-const Genre = require("../models/genre");
+const { Genre } = require("../models/genre");
 const { validateId } = require("../validator");
 
 const router = express.Router();

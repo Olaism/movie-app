@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const customers = require("./routers/customer");
 const genres = require("./routers/genre");
+const movies = require("./routers/movie");
 
 main()
   .then((res) => dbDebugger("Connected to database"))
@@ -18,5 +19,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1/customers", customers);
 app.use("/api/v1/genres", genres);
+app.use("/api/v1/movies", movies);
 
 app.listen(8080, () => console.log("listening on port 8080"));
