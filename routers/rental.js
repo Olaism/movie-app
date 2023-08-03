@@ -68,14 +68,14 @@ router.put("/:id", [
   body("movieId", "Invalid movie ID").trim().isMongoId(),
   async function (req, res) {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(422).send(errors);
+    if (!errors.isEmpty()) return res.status(422).send(errors.array()[0].msg);
 
     const { customerId, movieId } = req.body;
 
-    const movie = await Movie.findById(customerId);
+    const movie = await Movie.findById(movieId);
     if (!movie) return res.status(400).send("Invalid movie id");
 
-    const customer = await Customer.findById(movieId);
+    const customer = await Customer.findById(customerId);
     if (!customer) return res.status(400).send("Invalid customer id");
 
     if (movie.numberInStock === 0)
