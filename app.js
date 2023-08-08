@@ -8,6 +8,7 @@ const genres = require("./routers/genre");
 const movies = require("./routers/movie");
 const rentals = require("./routers/rental");
 const users = require("./routers/user");
+const { authenticateToken } = require("./middlewares/authenticate");
 
 if (!config.has("jwtPrivateToken") && !config.has("jwtPrivateKey")) {
   console.error("FATAL ERROR: jwtPrivateToken or jwtPrivateKey not configured");
@@ -31,6 +32,6 @@ app.use("/api/v1/customers", customers);
 app.use("/api/v1/genres", genres);
 app.use("/api/v1/movies", movies);
 app.use("/api/v1/rentals", rentals);
-app.use("/api/v1/users", users);
+app.use("/api/v1/users", authenticateToken, users);
 
 app.listen(8080, () => console.log("listening on port 8080"));

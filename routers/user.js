@@ -1,8 +1,13 @@
 const _ = require("lodash");
 const router = require("express").Router();
-const { authenticateToken } = require("../middlewares/authenticate");
 const { body, validationResult } = require("express-validator");
 const User = require("../models/user");
+
+router.get("/me", async (req, res) => {
+  const user = await User.findById(req.user._id).select("-password");
+  if (!user) return res.sendStatus(403);
+  res.send(user);
+});
 
 router.put("/", [
   body("username")
@@ -22,7 +27,6 @@ router.put("/", [
     .trim()
     .isBoolean()
     .withMessage("isAdmin must be a boolean"),
-  authenticateToken,
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).send(errors.array()[0].msg);
@@ -46,7 +50,7 @@ router.put("/", [
   },
 ]);
 
-router.delete("/", authenticateToken, async (req, res) => {
+router.delete("/", async (req, res) => {
   const { _id } = req.user;
   const user = await User.findByIdAndRemove(_id);
   if (!user) return res.sendStatus(404);

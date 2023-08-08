@@ -7,7 +7,7 @@ exports.authenticateToken = function (req, res, next) {
 
   if (!token) return res.sendStatus(401);
   jwt.verify(token, config.get("jwtPrivateKey"), (err, user) => {
-    if (err) return res.sendStatus(403);
+    if (err) return res.status(400).send("Invalid token");
     req.user = user;
     next();
   });
