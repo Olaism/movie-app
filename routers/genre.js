@@ -1,4 +1,3 @@
-const basicDebugger = require("debug")("app:basic");
 const dbDebugger = require("debug")("app:db");
 const _ = require("lodash");
 const express = require("express");
