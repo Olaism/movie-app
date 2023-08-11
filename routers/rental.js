@@ -49,15 +49,15 @@ router.post("/", [
         movie: movieId,
         dateOut: dateOut || Date.now(),
       });
-      await rental.save({ session });
-
       movie.numberInStock--;
-      await movie.save({ session });
 
-      session.commitTransaction();
+      await rental.save({ session });
+      await movie.save({ session });
+      await session.commitTransaction();
 
       res.status(201).send(rental);
     } catch (err) {
+      console.log(err);
       await session.abortTransaction();
       return res.status(500).send("Error creating rental");
     } finally {
@@ -83,19 +83,11 @@ router.put("/:id", [
     .optional()
     .isDate()
     .withMessage("dateOut has an invalid date format"),
-  body("dateReturned")
-    .optional()
-    .isDate()
-    .withMessage("dateRetured has an invalid date format"),
-  body("rentalFee")
-    .optional()
-    .isDecimal()
-    .withMessage("rentalFee has an invalid amount"),
   async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(422).send(errors.array()[0].msg);
 
-    const { customerId, movieId, dateOut, dateReturned, rentalFee } = req.body;
+    const { customerId, movieId, dateOut } = req.body;
 
     const movie = await Movie.findById(movieId);
     if (!movie) return res.status(404).send("Movie not found");
@@ -106,24 +98,54 @@ router.put("/:id", [
     if (movie.numberInStock === 0)
       return res.status(400).send("Movie not in stock");
 
-    const rental = await Rental.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: {
-          customer: customerId || rental.customer,
-          movie: movieId || rental.movie,
-          dateOut: dateOut || Date.now(),
-          dateReturned: dateReturned || rental.dateReturned,
-          rentalFee: rentalFee || rental.rentalFee,
+    const { id } = req.params;
+
+    if (!validateId(id)) return res.sendStatus(404);
+
+    const oldRental = await Rental.findById(id);
+
+    const session = await mongoose.startSession();
+    session.startSession();
+    try {
+      const rental = await Rental.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: {
+            customer: customerId || oldRental.customer,
+            movie: movieId || oldRental.movie,
+            dateOut: dateOut || Date.now(),
+          },
         },
-      },
-      { new: true }
-    );
+        { new: true },
+        { session }
+      );
 
-    if (!rental) return res.status(404).send("Not Found");
-    await rental.save();
-
-    res.status(201).send(rental);
+      if (!rental) return res.status(404).send("Not Found");
+      // get the old movie and roll back the numberInStock value
+      await Movie.findByIdAndUpdate(
+        oldRental.movie,
+        {
+          $set: { numberInStock: numberInStock++ },
+        },
+        { session }
+      );
+      // update the numberInStock value as a rental is made
+      movie.numberInStock--;
+      await movie.save({ session });
+      await session.commitTransaction();
+      res
+        .status(201)
+        .send(
+          rental
+            .populate("customer", "_id username")
+            .populate("movie", "_id title")
+        );
+    } catch (ex) {
+      session.abortTransaction();
+      return res.sendStatus(500);
+    } finally {
+      session.endSession();
+    }
   },
 ]);
 

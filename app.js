@@ -22,7 +22,10 @@ main()
   .catch((err) => dbDebugger(err));
 
 async function main() {
-  await mongoose.connect("mongodb://localhost:27017/movie");
+  await mongoose.connect("mongodb://localhost:27017/movie", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 }
 
 const app = express();
