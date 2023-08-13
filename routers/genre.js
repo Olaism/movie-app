@@ -4,12 +4,13 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const { Genre } = require("../models/genre");
 const { Movie } = require("../models/movie");
-const { validateId } = require("../validator");
+const { validateId } = require("../utils/validator");
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   const genres = await Genre.find().select("_id, name").sort({ name: "asc" });
+  throw new Error(`Cannot do a ${req.method} to ${req.url}`);
   res.send(genres);
 });
 

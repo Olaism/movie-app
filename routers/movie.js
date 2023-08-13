@@ -2,7 +2,7 @@ const express = require("express");
 const { body, param, validationResult } = require("express-validator");
 const { Genre } = require("../models/genre");
 const { Movie } = require("../models/movie");
-const { validateId } = require("../validator");
+const { validateId } = require("../utils/validator");
 
 const router = express.Router();
 

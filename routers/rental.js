@@ -4,7 +4,7 @@ const Customer = require("../models/customer");
 const { Rental } = require("../models/rental");
 const { Movie } = require("../models/movie");
 const { body, validationResult } = require("express-validator");
-const { validateId } = require("../validator");
+const { validateId } = require("../utils/validator");
 
 const router = express.Router();
 

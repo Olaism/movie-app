@@ -21,6 +21,7 @@
     "lodash": "^4.17.21",
     "logger": "^0.0.1",
     "mongodb": "^5.7.0",
-    "mongoose": "^7.1.0"
+    "mongoose": "^7.1.0",
+    "winston": "^3.10.0"
   }
 }

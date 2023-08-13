@@ -3,7 +3,7 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const Customer = require("../models/customer");
 const { Rental } = require("../models/rental");
-const { validateId } = require("../validator");
+const { validateId } = require("../utils/validator");
 const router = express.Router();
 
 router.get("/", async function (req, res) {

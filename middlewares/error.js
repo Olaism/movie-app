@@ -1,5 +1,7 @@
-const errorHandler = (err, req, res, next) => {
-  console.error(err);
+const logger = require("../utils/logger");
+
+const errorHandler = (err, req, res) => {
+  logger.error(err.message, err);
 
   res.status(err.status || 500);
 
