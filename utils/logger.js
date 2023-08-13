@@ -8,9 +8,11 @@ const logger = winston.createLogger({
     new winston.transports.File({ filename: "combined.log" }),
   ],
   exceptionHandlers: [
+    new winston.transports.Console({ colorize: true, prettyPrint: true }),
     new winston.transports.File({ filename: "exceptions.log" }),
   ],
   rejectionHandlers: [
+    new winston.transports.Console({ colorize: true, prettyPrint: true }),
     new winston.transports.File({ filename: "rejections.log" }),
   ],
 });
