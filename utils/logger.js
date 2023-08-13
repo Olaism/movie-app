@@ -7,6 +7,12 @@ const logger = winston.createLogger({
     new winston.transports.File({ filename: "error.log", level: "error" }),
     new winston.transports.File({ filename: "combined.log" }),
   ],
+  exceptionHandlers: [
+    new winston.transports.File({ filename: "exceptions.log" }),
+  ],
+  rejectionHandlers: [
+    new winston.transports.File({ filename: "rejections.log" }),
+  ],
 });
 
 if (process.env.NODE_ENV !== "production") {
